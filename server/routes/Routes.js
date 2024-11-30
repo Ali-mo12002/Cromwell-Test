@@ -1,49 +1,45 @@
-const express = require("express");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const User = require("../models/User");
-const verifyToken = require("../middleware");
+const express = require('express');
+const User = require('../models/User');
+const { signToken } = require('../middleware');
+const bcrypt = require('bcryptjs');
 
 const router = express.Router();
-const JWT_SECRET = process.env.JWT_SECRET;
 
-router.post("/register", async (req, res) => {
-  const { name, email, password } = req.body;
-  try {
-    const userExists = await User.findOne({ email });
-    if (userExists) return res.status(400).json({ message: "User already exists" });
-
-    const user = new User({ name, email, password });
-    await user.save();
-    res.status(201).json({ message: "User registered successfully" });
-  } catch (err) {
-    res.status(500).json({ message: "Server error" });
+router.post('/register', async (req, res) => {
+  const { email, password, name } = req.body;
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    return res.status(400).json({ message: 'User already exists' });
   }
+
+  const user = new User({ email, name, password });
+  await user.save();
+
+  const token = signToken(user);
+  console.log(user)
+
+  res.status(201).json({ token, user });
 });
 
-router.post("/login", async (req, res) => {
+router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-  try {
-    const user = await User.findOne({ email });
-    if (!user) return res.status(404).json({ message: "User not found" });
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) return res.status(400).json({ message: "Invalid credentials" });
-
-    const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1h" });
-    res.status(200).json({ token, user: { name: user.name, email: user.email } });
-  } catch (err) {
-    res.status(500).json({ message: "Server error" });
+  const user = await User.findOne({ email });
+  if (!user) {
+    return res.status(400).json({ message: 'User not found' });
   }
+
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    return res.status(400).json({ message: 'Invalid credentials' });
+  }
+
+  const token = signToken(user);
+  res.json({ token, user });
 });
 
-router.get("/", verifyToken, async (req, res) => {
-  try {
-    const user = await User.findById(req.user.id).select("-password");
-    res.json(user);
-  } catch (err) {
-    res.status(500).json({ message: "Server error" });
-  }
+router.get('/profile', async (req, res) => {
+  const user = req.user; 
+  res.json({ user });
 });
 
 module.exports = router;

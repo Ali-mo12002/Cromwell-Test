@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { useDispatch } from 'react-redux';
+import { login } from '../redux/authSlice'; // Import the login action from redux
 import styles from '../styling/Register.module.css';
 
 const Register = () => {
@@ -11,6 +12,7 @@ const Register = () => {
     confirmPassword: '',
   });
   const [error, setError] = useState('');
+  const dispatch = useDispatch(); // Redux dispatch
   const navigate = useNavigate();
 
   const handleChange = (e) => {
@@ -27,16 +29,33 @@ const Register = () => {
     }
 
     try {
-      const res = await axios.post('http://localhost:5000/user/register', {
-        name: formData.name,
-        email: formData.email,
-        password: formData.password,
+      const response = await fetch('http://localhost:5000/user/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+        }),
       });
-      if (res.status === 201) {
-        navigate('/login'); // Redirect to login page
+
+      const data = await response.json();
+
+      if (response.ok) {
+        // Registration successful, automatically log in the user
+        const { token, user } = data;  // Assume token and user are returned upon registration
+        localStorage.setItem('id_token', token); // Store the token in localStorage
+        localStorage.setItem('user', JSON.stringify(user)); // Store the user in localStorage
+        console.log(user);
+        dispatch(login({ token, user })); // Dispatch the login action to Redux
+        navigate('/')
+      } else {
+        setError(data.message || 'Something went wrong!');
       }
     } catch (err) {
-      setError(err.response?.data?.message || 'Something went wrong!');
+      setError('Something went wrong!');
     }
   };
 

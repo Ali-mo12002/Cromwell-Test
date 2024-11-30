@@ -3,9 +3,10 @@
     justify-content: space-between;
     align-items: center;
     color: white;
-    padding: 1rem 0.5rem;
+    padding: 1rem 0.5% ;
     position: fixed;
-    width: 100%;
+    width: 99%;
+
   }
   img{
     width: auto;
@@ -29,3 +30,23 @@
     font-weight: bold;
   }
   
+  .userName{
+    color: #ff5100;
+    font-size: 20px;
+    padding: 4px;
+  }
+  .logoutBtn{
+    background: none;
+    border: none;
+    font-size: 20px;
+    color: #ff5100;
+    padding: 4px;
+    text-decoration: underline;
+  }
+  .logoutBtn:hover{
+    text-decoration: none;
+    background-color: #ff5100;
+    color: white;
+    border-radius: 2px;
+    cursor: pointer;
+  }
