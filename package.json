@@ -14,10 +14,14 @@
   "main": "index.js",
   "devDependencies": {
     "jest": "^29.7.0",
-    "supertest": "^7.0.0"
+    "supertest": "^7.0.0",
+    "concurrently": "^8.2.0"
+
   },
   "scripts": {
-    "test:backend": "jest server"
+    "test:backend": "jest server",
+    "develop": "concurrently \"cd server && npm run watch\" \"cd client && npm run dev\""
+
   },
   "keywords": [],
   "author": "",
