@@ -7,7 +7,6 @@ const verifyToken = require("../middleware");
 const router = express.Router();
 const JWT_SECRET = process.env.JWT_SECRET;
 
-// Register endpoint
 router.post("/register", async (req, res) => {
   const { name, email, password } = req.body;
   try {
@@ -22,7 +21,6 @@ router.post("/register", async (req, res) => {
   }
 });
 
-// Login endpoint
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
   try {
@@ -39,7 +37,6 @@ router.post("/login", async (req, res) => {
   }
 });
 
-// Protected route
 router.get("/", verifyToken, async (req, res) => {
   try {
     const user = await User.findById(req.user.id).select("-password");

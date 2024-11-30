@@ -12,10 +12,9 @@ app.use(cors());
 app.use(bodyParser.json());
 
 connectDB()
-// API routes
 app.use("/user", userRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 
-module.exports = app; // Export app for testing
+module.exports = app; 

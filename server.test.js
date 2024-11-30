@@ -38,7 +38,6 @@ describe("POST /user/register", () => {
   });
 });
 
-// Test Login
 describe("POST /user/login", () => {
   it("should login a registered user", async () => {
     const res = await request(app).post("/user/login").send({
@@ -59,7 +58,6 @@ describe("POST /user/login", () => {
   });
 });
 
-// Test Protected Route
 describe("GET /user", () => {
   it("should fetch user details with valid token", async () => {
     const loginRes = await request(app).post("/user/login").send({
