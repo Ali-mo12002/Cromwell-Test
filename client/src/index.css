@@ -7,19 +7,5 @@ body {
   color: #333;
 }
 
-header {
-  color: #fff;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-}
 
-header nav a {
-  color: #fff;
-  text-decoration: none;
-  margin: 0 1rem;
-}
 
-header nav a:hover {
-  text-decoration: underline;
-}

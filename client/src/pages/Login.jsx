@@ -20,7 +20,6 @@ const Login = () => {
       if (res.status === 200) {
         const { token, user } = res.data;
         AuthService.login(token, user, dispatch); 
-        console.log(res.data , '23');
         navigate('/'); 
       }
     } catch (err) {

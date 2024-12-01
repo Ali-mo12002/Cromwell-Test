@@ -48,7 +48,6 @@ const Register = () => {
         const { token, user } = data;  // Assume token and user are returned upon registration
         localStorage.setItem('id_token', token); // Store the token in localStorage
         localStorage.setItem('user', JSON.stringify(user)); // Store the user in localStorage
-        console.log(user);
         dispatch(login({ token, user })); // Dispatch the login action to Redux
         navigate('/')
       } else {

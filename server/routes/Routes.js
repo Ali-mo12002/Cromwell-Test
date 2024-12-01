@@ -9,7 +9,7 @@ router.post('/register', async (req, res) => {
   const { email, password, name } = req.body;
   const existingUser = await User.findOne({ email });
   if (existingUser) {
-    return res.status(400).json({ message: 'User already exists' });
+    return res.status(400).json({ message: 'authentication / submission has failed' });
   }
 
   const user = new User({ email, name, password });
@@ -18,28 +18,28 @@ router.post('/register', async (req, res) => {
   const token = signToken(user);
   console.log(user)
 
-  res.status(201).json({ token, user });
+  res.status(200).json({ token, user });
 });
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
   const user = await User.findOne({ email });
   if (!user) {
-    return res.status(400).json({ message: 'User not found' });
+    return res.status(400).json({ message: 'authentication / submission has failed' });
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
-    return res.status(400).json({ message: 'Invalid credentials' });
+    return res.status(400).json({ message: 'authentication / submission has failed' });
   }
 
   const token = signToken(user);
-  res.json({ token, user });
+  res.status(200).json({ token, user });
 });
 
 router.get('/profile', async (req, res) => {
   const user = req.user; 
-  res.json({ user });
+  res.status(200).json({ user });
 });
 
 module.exports = router;
