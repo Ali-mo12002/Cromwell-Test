@@ -19,10 +19,17 @@ const Register = () => {
     const { name, value } = e.target;
     setFormData({ ...formData, [name]: value });
   };
-
+  const validatePassword = (password) => {
+    // Regular expression for validation
+    const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
+    return passwordRegex.test(password);
+  };
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    if (!validatePassword(formData.password)) {
+      setError('Password must contain at least one capital letter, one number, and be at least 8 characters long.');
+      return;
+    }
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
       return;

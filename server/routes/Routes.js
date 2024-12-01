@@ -1,8 +1,7 @@
 const express = require('express');
 const User = require('../models/User');
-const { signToken } = require('../middleware');
+const { signToken, authMiddleware } = require('../middleware');
 const bcrypt = require('bcryptjs');
-
 const router = express.Router();
 
 router.post('/register', async (req, res) => {
@@ -18,7 +17,7 @@ router.post('/register', async (req, res) => {
   const token = signToken(user);
   console.log(user)
 
-  res.status(200).json({ token, user });
+  res.status(200).json({message: 'User registered successfully', token, user });
 });
 
 router.post('/login', async (req, res) => {
@@ -37,9 +36,11 @@ router.post('/login', async (req, res) => {
   res.status(200).json({ token, user });
 });
 
-router.get('/profile', async (req, res) => {
+router.get('/profile', authMiddleware,  async (req, res) => {
+  console.log('ss')
   const user = req.user; 
-  res.status(200).json({ user });
+  console.log(user);
+  res.status(200).json({ email: user.email, name: user.name });
 });
 
 module.exports = router;
