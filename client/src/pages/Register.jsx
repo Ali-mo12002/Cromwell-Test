@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { login } from '../redux/authSlice'; // Import the login action from redux
+import { login } from '../redux/authSlice'; // Importing login action from redux
 import styles from '../styling/Register.module.css';
 
 const Register = () => {
@@ -16,26 +16,26 @@ const Register = () => {
   const navigate = useNavigate();
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target; // updating formdata fields
     setFormData({ ...formData, [name]: value });
   };
   const validatePassword = (password) => {
     // Regular expression for validation
     const passwordRegex = /^(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{8,}$/;
-    return passwordRegex.test(password);
+    return passwordRegex.test(password); //Validation if user password meets requirements
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!validatePassword(formData.password)) {
       setError('Password must contain at least one capital letter, one number, and be at least 8 characters long.');
-      return;
+      return; // error if user password does not meet requirements
     }
     if (formData.password !== formData.confirmPassword) {
       setError('Passwords do not match');
-      return;
+      return; // error if passwords do not match
     }
 
-    try {
+    try { // sending register request to api
       const response = await fetch('http://localhost:5000/user/register', {
         method: 'POST',
         headers: {
@@ -51,8 +51,8 @@ const Register = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // Registration successful, automatically log in the user
-        const { token, user } = data;  // Assume token and user are returned upon registration
+        // if registration successful, automatically log in the user
+        const { token, user } = data;  // token and user are returned upon registration
         localStorage.setItem('id_token', token); // Store the token in localStorage
         localStorage.setItem('user', JSON.stringify(user)); // Store the user in localStorage
         dispatch(login({ token, user })); // Dispatch the login action to Redux

@@ -13,10 +13,10 @@ const App = () => {
     <Router>
       <Header />
         <Routes>
-        <Route path="/" element={user ? <LandingPage /> : <Home />} /> 
-          <Route path="/login" element={user ? <LandingPage /> : <Login />} /> 
-          <Route path="/register" element={user ? <LandingPage /> : <Register />} />
-          <Route path="/landing" element={user ? <LandingPage /> : <Login />} /> 
+        <Route path="/" element={user ? <LandingPage /> : <Home />} /> {/*Home route - if user is logged in they are redirected to Landing page*/}
+          <Route path="/login" element={user ? <LandingPage /> : <Login />} />  {/*Login route - if user is logged in they are redirected to Landing page*/}
+          <Route path="/register" element={user ? <LandingPage /> : <Register />} /> {/*Register route - if user is logged in they are redirected to Landing page*/}
+          <Route path="/landing" element={user ? <LandingPage /> : <Login />} /> {/*Landing route - if user is not logged in they are redirected to Login page*/}
         </Routes>
     </Router>
   );

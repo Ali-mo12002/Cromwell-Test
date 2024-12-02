@@ -6,7 +6,8 @@ import AuthService from '../utils/auth';
 import styles from '../styling/Login.module.css'; 
 
 const Login = () => {
-  const [email, setEmail] = useState('');
+  /* using UseState for form fields */
+  const [email, setEmail] = useState(''); 
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const dispatch = useDispatch();
@@ -14,12 +15,12 @@ const Login = () => {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-
+    /* sending log in request to api*/
     try {
       const res = await axios.post('http://localhost:5000/user/login', { email, password });
       if (res.status === 200) {
         const { token, user } = res.data;
-        AuthService.login(token, user, dispatch); 
+        AuthService.login(token, user, dispatch); // sending to auth page to store token and user details in redux store
         navigate('/'); 
       }
     } catch (err) {

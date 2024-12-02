@@ -6,8 +6,8 @@ import styles from '../styling/Header.module.css';
 import logo from '../assets/Logo.svg';
 
 const Header = () => {
-  const [isMenuOpen, setIsMenuOpen] = useState(false); // State for mobile menu toggle
-  const user = useSelector((state) => state.auth.user); 
+  const [isMenuOpen, setIsMenuOpen] = useState(false); // State for mobile menu
+  const user = useSelector((state) => state.auth.user); // Fetching user from Redux  store
   const dispatch = useDispatch();
   const handleLogout = () => {
     // Handle logout logic: clear token and user from Redux store and localStorage
@@ -31,7 +31,7 @@ const Header = () => {
       </div>
       
       <nav className={`${styles.nav} ${isMenuOpen ? styles.active  : ''}`}>
-        
+       {/* Nav bar links when logged out */}
         {!user && (
           <>
           <Link to="/" className={styles.navLink}>
@@ -47,6 +47,8 @@ const Header = () => {
         )}
         {user && (
           <>
+          {/* Nav bar when logged in*/}
+
           <span className={styles.userName}>Welcome, {user?.name}</span>
 
           <button onClick={handleLogout} className={styles.logoutBtn}>
